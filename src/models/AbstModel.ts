@@ -21,12 +21,14 @@ export default abstract class AbstModel<T> implements IModel<T> {
   }
 
   public async update(id: string, obj: T): Promise<T | null> {
-    const result = await this._model.updateOne({ id }, { obj });
-    return result as T;
+    const result = await this._model.findOneAndUpdate({ id }, { obj }, { new: true });
+    if (!result) return null;
+    return result;
   }
 
   public async delete(id: string): Promise<T | null> {
-    const result = await this._model.deleteOne({ id });
-    return result as T;
+    const result = await this._model.findOneAndRemove({ id });
+    if (!result) return null;
+    return result;
   }
 }
