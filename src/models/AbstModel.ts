@@ -1,13 +1,12 @@
 import { Model } from 'mongoose';
-import { IdRequired } from '../interfaces/IdRequired';
 import { IModel } from '../interfaces/IModel';
 
 export default abstract class AbstModel<T> implements IModel<T> {
   constructor(protected _model: Model<T>) {}
 
-  public async create(obj: T): Promise<T & IdRequired> {
+  public async create(obj: T): Promise<T> {
     const result = await this._model.create(obj);
-    return result as T & IdRequired;
+    return result;
   }
 
   public async read(): Promise<T[]> {

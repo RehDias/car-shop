@@ -1,11 +1,10 @@
 import { IModel } from '../interfaces/IModel';
 import { Car, ICar } from '../interfaces/ICar';
-import { IdRequired } from '../interfaces/IdRequired';
 
 export default class CarService implements IModel<ICar> {
   constructor(private _car: IModel<ICar>) { }
 
-  public async create(obj: unknown): Promise<ICar & IdRequired> {
+  public async create(obj: unknown): Promise<ICar> {
     const validated = Car.safeParse(obj);
     if (!validated.success) throw validated.error;
     
