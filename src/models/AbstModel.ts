@@ -1,4 +1,4 @@
-import { isValidObjectId, Model } from 'mongoose';
+import { isValidObjectId, Model, UpdateQuery } from 'mongoose';
 import { ErrTypes } from '../errors/errors';
 import { IModel } from '../interfaces/IModel';
 
@@ -22,14 +22,21 @@ export default abstract class AbstModel<T> implements IModel<T> {
   }
 
   public async update(id: string, obj: T): Promise<T | null> {
-    const result = await this._model.findOneAndUpdate({ id }, { obj }, { new: true });
-    if (!result) return null;
+    if (JSON.stringify(obj) === '{}') throw new Error(ErrTypes.BodyNotFound);
+    if (!isValidObjectId(id)) throw Error(ErrTypes.InvalidId);  
+      
+    const result = await this._model.findByIdAndUpdate(
+      { _id: id }, 
+      { ...obj as UpdateQuery<T> },
+      { new: true },
+    ).select('-__v');
     return result;
   }
 
   public async delete(id: string): Promise<T | null> {
-    const result = await this._model.findOneAndRemove({ id });
-    if (!result) return null;
+    if (!isValidObjectId(id)) throw Error(ErrTypes.InvalidId);  
+
+    const result = await this._model.findByIdAndRemove({ _id: id });
     return result;
   }
 }

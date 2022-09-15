@@ -20,4 +20,10 @@ export default class CarController {
 
     return res.status(200).json(result);
   }
+
+  public async update(req: Request, res: Response<ICar | null>) {
+    const result = await this._carService.update(req.params.id, req.body);
+    
+    return res.status(200).json(result);
+  }
 }

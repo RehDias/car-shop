@@ -1,6 +1,7 @@
 export enum ErrTypes {
   NotFound = 'NotFound',
   InvalidId = 'InvalidId',
+  BodyNotFound = 'BodyNotFound',
 }
 
 type Message = {
@@ -17,6 +18,10 @@ export const errTypes: Errors = {
   },
   InvalidId: {
     message: 'Id must have 24 hexadecimal characters',
+    status: 400,
+  },
+  BodyNotFound: {
+    message: 'Body can\'t be empty',
     status: 400,
   },
 };

@@ -10,7 +10,7 @@ const carMongSchema = new Schema<ICar>({
   buyValue: Number,
   doorsQty: Number,
   seatsQty: Number,
-});
+}, { versionKey: false });
 
 export default class CarModel extends AbstModel<ICar> {
   constructor(_model = model('Car', carMongSchema)) {
