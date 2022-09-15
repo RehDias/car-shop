@@ -13,6 +13,7 @@ describe('Car Service', () => {
 
   before(async () => {
     sinon.stub(Model, 'create').resolves(carMockResponse);
+    sinon.stub(Model, 'find').resolves([carMockResponse]);
   });
 
   after(()=>{
@@ -34,7 +35,15 @@ describe('Car Service', () => {
         e = error;
       }
 
+      expect(e).not.to.be.undefined;
       expect(e).to.be.instanceOf(ZodError);
+    });
+  });
+
+  describe('read', () => {
+    it('retorna lista de carros', async () => {
+      const car = await carService.read();
+      expect(car).to.be.deep.equal([carMockResponse]);
     });
   });
 });
