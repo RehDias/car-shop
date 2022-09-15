@@ -5,6 +5,7 @@ import CarService from '../../../services/CarService';
 import { Model } from 'mongoose';
 import { carMock, carMockResponse } from '../../mocks/carMock';
 import { ZodError } from 'zod';
+import { ErrTypes } from '../../../errors/errors';
 const { expect } = chai;
 
 describe('Car Service', () => {
@@ -12,8 +13,12 @@ describe('Car Service', () => {
   const carService = new CarService(carModel);
 
   before(async () => {
-    sinon.stub(Model, 'create').resolves(carMockResponse);
-    sinon.stub(Model, 'find').resolves([carMockResponse]);
+    sinon.stub(carModel, 'create').resolves(carMockResponse);
+    sinon.stub(carModel, 'read').resolves([carMockResponse]);
+    sinon.stub(carModel, 'readOne')
+    .onCall(0).resolves(carMockResponse)
+    .onCall(1).resolves(null);
+    ;
   });
 
   after(()=>{
@@ -44,6 +49,26 @@ describe('Car Service', () => {
     it('retorna lista de carros', async () => {
       const car = await carService.read();
       expect(car).to.be.deep.equal([carMockResponse]);
+    });
+  });
+
+  describe('readOne', () => {
+    it('retorna o carro correspondente ao id passado', async () => {
+      const car = await carService.readOne('63237ea17dd3cab9842d046c');
+      expect(car).to.be.deep.equal(carMockResponse);
+    });
+
+    it('se ocorrer um erro retorna NotFound', async () => {
+      let e: any;
+
+      try {
+        await carService.readOne('63237ea17dd3cab9842d046c');
+      } catch (error) {
+        e = error;
+      }
+
+      expect(e).not.to.be.undefined;
+      expect(e.message).to.be.equal(ErrTypes.NotFound);
     });
   });
 });

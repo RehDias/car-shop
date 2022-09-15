@@ -18,7 +18,6 @@ export default abstract class AbstModel<T> implements IModel<T> {
   public async readOne(id: string): Promise<T | null> {
     if (!isValidObjectId(id)) throw Error(ErrTypes.InvalidId);    
     const result = await this._model.findById({ _id: id });
-    // if (!result) throw new Error(ErrTypes.NotFound);
     return result;
   }
 
