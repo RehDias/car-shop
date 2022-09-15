@@ -14,6 +14,7 @@ describe('CarModel', () => {
     sinon.stub(Model, 'find').resolves([carMockResponse]);
     sinon.stub(Model, 'findById').resolves(carMockResponse);
     sinon.stub(Model, 'findByIdAndUpdate').resolves(carMockResponse);
+    sinon.stub(Model, 'findByIdAndRemove').resolves(carMockResponse);
   });
 
   after(()=>{
@@ -58,6 +59,21 @@ describe('CarModel', () => {
     it('retorna erro caso id esteja errado', async () => {
       try {
         await carModel.update('id_errado', carMock);
+      } catch (e: any) {
+        expect(e.message).to.be.equal(ErrTypes.InvalidId);
+      }
+    });
+  });
+
+  describe('update', () => {
+    it('retorna qual carro foi deletado', async () => {
+      const cars = await carModel.delete(carMockResponse._id);
+      expect(cars).to.be.deep.equal(carMockResponse);
+    });
+
+    it('retorna erro caso id esteja errado', async () => {
+      try {
+        await carModel.delete('id_errado');
       } catch (e: any) {
         expect(e.message).to.be.equal(ErrTypes.InvalidId);
       }

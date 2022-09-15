@@ -21,6 +21,9 @@ describe('Car Service', () => {
     sinon.stub(carModel, 'update')
     .onCall(0).resolves(carMockResponse)
     .onCall(1).resolves(null);
+    sinon.stub(carModel, 'delete')
+    .onCall(0).resolves(carMockResponse)
+    .onCall(1).resolves(null);
   });
 
   after(()=>{
@@ -85,6 +88,26 @@ describe('Car Service', () => {
 
       try {
         await carService.update(carMockResponse._id, carMock);
+      } catch (error) {
+        e = error;
+      }
+
+      expect(e).not.to.be.undefined;
+      expect(e.message).to.be.equal(ErrTypes.NotFound);
+    });
+  });
+
+  describe('delete', () => {
+    it('retorna qual carro foi deletado', async () => {
+      const car = await carService.delete(carMockResponse._id);
+      expect(car).to.be.deep.equal(carMockResponse);
+    });
+
+    it('se id estiver incorreto retorna NotFound', async () => {
+      let e: any;
+
+      try {
+        await carService.delete(carMockResponse._id,);
       } catch (error) {
         e = error;
       }

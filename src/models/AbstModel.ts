@@ -37,6 +37,8 @@ export default abstract class AbstModel<T> implements IModel<T> {
     if (!isValidObjectId(id)) throw Error(ErrTypes.InvalidId);  
 
     const result = await this._model.findByIdAndRemove({ _id: id });
+    console.log(result);
+    
     return result;
   }
 }
