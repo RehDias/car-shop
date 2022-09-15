@@ -33,6 +33,6 @@ describe('car controller', () => {
 
       expect((res.status as sinon.SinonStub).calledWith(201)).to.be.true;
       expect((res.json as sinon.SinonStub).calledWith(carMockResponse)).to.be.true;
-    })
+    });
   });
 });
