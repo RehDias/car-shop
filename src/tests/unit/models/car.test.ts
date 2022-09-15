@@ -13,6 +13,7 @@ describe('CarModel', () => {
     sinon.stub(Model, 'create').resolves(carMockResponse);
     sinon.stub(Model, 'find').resolves([carMockResponse]);
     sinon.stub(Model, 'findById').resolves(carMockResponse);
+    sinon.stub(Model, 'findByIdAndUpdate').resolves(carMockResponse);
   });
 
   after(()=>{
@@ -42,6 +43,21 @@ describe('CarModel', () => {
     it('retorna erro caso id esteja errado', async () => {
       try {
         await carModel.readOne('id_errado');
+      } catch (e: any) {
+        expect(e.message).to.be.equal(ErrTypes.InvalidId);
+      }
+    });
+  });
+
+  describe('update', () => {
+    it('retorna o carro atualizado correspondente ao id passado', async () => {
+      const cars = await carModel.update(carMockResponse._id, carMock);
+      expect(cars).to.be.deep.equal(carMockResponse);
+    });
+
+    it('retorna erro caso id esteja errado', async () => {
+      try {
+        await carModel.update('id_errado', carMock);
       } catch (e: any) {
         expect(e.message).to.be.equal(ErrTypes.InvalidId);
       }

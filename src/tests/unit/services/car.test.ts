@@ -18,7 +18,9 @@ describe('Car Service', () => {
     sinon.stub(carModel, 'readOne')
     .onCall(0).resolves(carMockResponse)
     .onCall(1).resolves(null);
-    ;
+    sinon.stub(carModel, 'update')
+    .onCall(0).resolves(carMockResponse)
+    .onCall(1).resolves(null);
   });
 
   after(()=>{
@@ -63,6 +65,26 @@ describe('Car Service', () => {
 
       try {
         await carService.readOne('63237ea17dd3cab9842d046c');
+      } catch (error) {
+        e = error;
+      }
+
+      expect(e).not.to.be.undefined;
+      expect(e.message).to.be.equal(ErrTypes.NotFound);
+    });
+  });
+
+  describe('update', () => {
+    it('retorna o carro atualizadp correspondente ao id passado', async () => {
+      const car = await carService.update(carMockResponse._id, carMock);
+      expect(car).to.be.deep.equal(carMockResponse);
+    });
+
+    it('se id estiver incorreto retorna NotFound', async () => {
+      let e: any;
+
+      try {
+        await carService.update(carMockResponse._id, carMock);
       } catch (error) {
         e = error;
       }

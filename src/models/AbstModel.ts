@@ -29,7 +29,7 @@ export default abstract class AbstModel<T> implements IModel<T> {
       { _id: id }, 
       { ...obj as UpdateQuery<T> },
       { new: true },
-    ).select('-__v');
+    );
     return result;
   }
 
