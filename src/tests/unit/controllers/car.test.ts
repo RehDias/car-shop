@@ -15,24 +15,34 @@ describe('car controller', () => {
   const req = {} as Request;
   const res = {} as Response;
 
-  before(async () => {
+  before(() => {
     sinon.stub(carService, 'create').resolves(carMockResponse);
+    sinon.stub(carService, 'read').resolves([carMockResponse]);
 
     res.status = sinon.stub().returns(res);
     res.json = sinon.stub().returns(res);
   });
 
-  after(()=>{
+  after(() => {
     sinon.restore();
-  });
+  }); 
 
-  describe('create', () => {
+  describe('create', () => {    
     it('deve retornar status 201 e o carro criado', async () => {
       req.body = carMock;
       await carController.create(req, res);
 
       expect((res.status as sinon.SinonStub).calledWith(201)).to.be.true;
       expect((res.json as sinon.SinonStub).calledWith(carMockResponse)).to.be.true;
+    });
+  });
+
+  describe('read', () => {
+    it('deve retornar status 200 e uma lista de carros', async () => {
+      await carController.read(req, res);
+      
+      expect((res.status as sinon.SinonStub).calledWith(200)).to.be.true;
+      expect((res.json as sinon.SinonStub).calledWith([carMockResponse])).to.be.true;
     });
   });
 });
