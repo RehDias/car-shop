@@ -33,7 +33,7 @@ export default class CarService implements IModel<ICar> {
 
   public async delete(id: string): Promise<ICar | null> {
     const result = await this._car.delete(id);
-    if (!result) throw new Error();
+    if (!result) throw new Error(ErrTypes.NotFound);
 
     return result;
   }
