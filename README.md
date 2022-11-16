@@ -6,7 +6,7 @@
 
 <h3>Tecnologias utilizadas</h3>
 
-<p>Essa aplicação foi desenvolvida em TypeScript, utilizando MongoDB e Mongoose, o Docker e docker-compose foram desenvolvidos e disponibilizados pela Trybe, foram utilizadas as bibliotecas zod e express.</p>
+<p>Essa aplicação foi desenvolvida em TypeScript, utilizando MongoDB e Mongoose, o Docker e docker-compose foram desenvolvidos e disponibilizados pela Trybe, foram utilizadas as bibliotecas zod, express, mocha, chai e sinon para a realização dos testes.</p>
 
 <h3>Aplicação</h3>
 
